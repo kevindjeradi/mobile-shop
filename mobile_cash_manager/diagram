@@ -1,0 +1,532 @@
+@startuml
+set namespaceSeparator ::
+
+class "mobile_cash_manager::api::article_api.dart::ArticleApi" {
+  {static} +Future<Response> createArticle()
+  {static} +Future<Response> updateArticle()
+  {static} +Future<Response> getAllArticles()
+  {static} +Future<Response> getArticleByBarcode()
+  {static} +Future<Response> getById()
+  {static} +Future<Response> deleteWithId()
+}
+
+class "mobile_cash_manager::api::interceptors::global_interceptor.dart::GlobalInterceptor" {
+  +Future<RequestData> interceptRequest()
+  +Future<ResponseData> interceptResponse()
+}
+
+"http_interceptor::http::interceptor_contract.dart::InterceptorContract" <|-- "mobile_cash_manager::api::interceptors::global_interceptor.dart::GlobalInterceptor"
+
+class "mobile_cash_manager::api::user_api.dart::UserApi" {
+  {static} +Future<Response> createUser()
+  {static} +Future<Response> login()
+  {static} +Future<Response> addCard()
+  {static} +Future<Response> updateSolde()
+  {static} +Future<Response> getCards()
+  {static} +Future<Response> getAllUsers()
+  {static} +Future<Response> getById()
+  {static} +Future<Response> getByMail()
+  {static} +Future<Response> updateUser()
+  {static} +Future<Response> deleteWithId()
+}
+
+class "mobile_cash_manager::componants::articles_list.dart::ArticlesList" {
+  +State<ArticlesList> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::articles_list.dart::ArticlesList"
+
+class "mobile_cash_manager::componants::articles_list.dart::_ArticlesListState" {
+  +Future<List<Article>> getArticles()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::articles_list.dart::_ArticlesListState"
+
+class "mobile_cash_manager::componants::article_container.dart::ArticleContainer" {
+  +Article article
+  +State<ArticleContainer> createState()
+}
+
+"mobile_cash_manager::componants::article_container.dart::ArticleContainer" o-- "mobile_cash_manager::models::article.dart::Article"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::article_container.dart::ArticleContainer"
+
+class "mobile_cash_manager::componants::article_container.dart::_ArticleContainerState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::article_container.dart::_ArticleContainerState"
+
+class "mobile_cash_manager::componants::article_detail.dart::ArticleDetail" {
+  +Article article
+  +State<ArticleDetail> createState()
+}
+
+"mobile_cash_manager::componants::article_detail.dart::ArticleDetail" o-- "mobile_cash_manager::models::article.dart::Article"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::article_detail.dart::ArticleDetail"
+
+class "mobile_cash_manager::componants::article_detail.dart::_ArticleDetailState" {
+  +int? countControllerValue
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::article_detail.dart::_ArticleDetailState"
+
+class "mobile_cash_manager::componants::cart.dart::Cart" {
+  +_CartState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::cart.dart::Cart"
+
+class "mobile_cash_manager::componants::cart.dart::_CartState" {
+  +GlobalKey<ScaffoldState> scaffoldKey
+  +List<Article> cartItems
+  +dynamic updateSolde()
+  +void initState()
+  +Widget build()
+}
+
+"mobile_cash_manager::componants::cart.dart::_CartState" o-- "flutter::src::widgets::framework.dart::GlobalKey<ScaffoldState>"
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::cart.dart::_CartState"
+
+class "mobile_cash_manager::componants::count_controller.dart::CountController" {
+  +Widget Function(bool) decrementIconBuilder
+  +Widget Function(bool) incrementIconBuilder
+  +Widget Function(int) countBuilder
+  +int count
+  +dynamic Function(int) updateCount
+  +int stepSize
+  +int? minimum
+  +int? maximum
+  +EdgeInsetsGeometry contentPadding
+  +_CountControllerState createState()
+}
+
+"mobile_cash_manager::componants::count_controller.dart::CountController" o-- "null::Widget Function(bool)"
+"mobile_cash_manager::componants::count_controller.dart::CountController" o-- "null::Widget Function(int)"
+"mobile_cash_manager::componants::count_controller.dart::CountController" o-- "null::dynamic Function(int)"
+"mobile_cash_manager::componants::count_controller.dart::CountController" o-- "flutter::src::painting::edge_insets.dart::EdgeInsetsGeometry"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::count_controller.dart::CountController"
+
+class "mobile_cash_manager::componants::count_controller.dart::_CountControllerState" {
+  +int count
+  +int? minimum
+  +int? maximum
+  +int stepSize
+  +bool canDecrement
+  +bool canIncrement
+  -void _decrementCounter()
+  -void _incrementCounter()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::count_controller.dart::_CountControllerState"
+
+class "mobile_cash_manager::componants::custom_button.dart::CustomButton" {
+  +void Function()? onPressed
+  +Widget child
+  +State<CustomButton> createState()
+}
+
+"mobile_cash_manager::componants::custom_button.dart::CustomButton" o-- "null::void Function()"
+"mobile_cash_manager::componants::custom_button.dart::CustomButton" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::custom_button.dart::CustomButton"
+
+class "mobile_cash_manager::componants::custom_button.dart::_CustomButtonState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::custom_button.dart::_CustomButtonState"
+
+class "mobile_cash_manager::componants::custom_text_field.dart::CustomTextField" {
+  +String label
+  +TextEditingController controller
+  +TextInputType type
+  +bool password
+  +State<CustomTextField> createState()
+}
+
+"mobile_cash_manager::componants::custom_text_field.dart::CustomTextField" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"mobile_cash_manager::componants::custom_text_field.dart::CustomTextField" o-- "flutter::src::services::text_input.dart::TextInputType"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::custom_text_field.dart::CustomTextField"
+
+class "mobile_cash_manager::componants::custom_text_field.dart::_CustomTextFieldState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::custom_text_field.dart::_CustomTextFieldState"
+
+class "mobile_cash_manager::componants::my_cards.dart::MyCards" {
+  +_MyCardsState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::componants::my_cards.dart::MyCards"
+
+class "mobile_cash_manager::componants::my_cards.dart::_MyCardsState" {
+  +GlobalKey<ScaffoldState> scaffoldKey
+  +bool isCvvFocused
+  +List<Cards> cards
+  +Future<List<Cards>> getCards()
+  +void initState()
+  +Widget build()
+}
+
+"mobile_cash_manager::componants::my_cards.dart::_MyCardsState" o-- "flutter::src::widgets::framework.dart::GlobalKey<ScaffoldState>"
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::componants::my_cards.dart::_MyCardsState"
+
+class "mobile_cash_manager::main.dart::GothamMobile" {
+  +State<GothamMobile> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::main.dart::GothamMobile"
+
+class "mobile_cash_manager::main.dart::_GothamMobileState" {
+  +void initState()
+  +Future<void> setup()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::main.dart::_GothamMobileState"
+
+class "mobile_cash_manager::models::article.dart::Article" {
+  +String nom
+  +String image
+  +String description
+  +String prix
+  +String id
+  +String barcode
+  +int quantite
+  +Map<String, dynamic> toJson()
+  +String toString()
+}
+
+class "mobile_cash_manager::models::cards.dart::Cards" {
+  +String email
+  +String cardNumber
+  +String expiryDate
+  +String cvvCode
+  +String cardHolder
+  +Map<String, dynamic> toJson()
+  +String toString()
+}
+
+class "mobile_cash_manager::models::user.dart::User" {
+  +String firstName
+  +String lastName
+  +String email
+  +String id
+  +double solde
+  +Map<String, dynamic> toJson()
+  +String toString()
+}
+
+class "mobile_cash_manager::providers::cart_provider.dart::CartProvider" {
+  -List<Article> _cartItems
+  +List<Article> items
+  +dynamic clearCart()
+  +double getTotal()
+  +void addItem()
+  +void removeItem()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "mobile_cash_manager::providers::cart_provider.dart::CartProvider"
+
+class "mobile_cash_manager::providers::client_provider.dart::ClientProvider" {
+  -User? _user
+  +User? user
+  +void setUser()
+  +void changeUser()
+}
+
+"mobile_cash_manager::providers::client_provider.dart::ClientProvider" o-- "mobile_cash_manager::models::user.dart::User"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "mobile_cash_manager::providers::client_provider.dart::ClientProvider"
+
+class "mobile_cash_manager::providers::connectivity_provider.dart::ConnectivityProvider" {
+  +ConnectivityResult? result
+  +StreamSubscription<dynamic>? subscription
+  +Future<void> setup()
+  +void dispose()
+}
+
+"mobile_cash_manager::providers::connectivity_provider.dart::ConnectivityProvider" o-- "connectivity_plus_platform_interface::src::enums.dart::ConnectivityResult"
+"mobile_cash_manager::providers::connectivity_provider.dart::ConnectivityProvider" o-- "dart::async::StreamSubscription<dynamic>"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "mobile_cash_manager::providers::connectivity_provider.dart::ConnectivityProvider"
+
+class "mobile_cash_manager::providers::utils_provider.dart::UtilsProvider" {
+  -int _menuNavIndex
+  -int _teamViewId
+  +int menuNavIndex
+  +int teamViewId
+  +void changeNavIndex()
+  +void changeTeamViewIndex()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "mobile_cash_manager::providers::utils_provider.dart::UtilsProvider"
+
+abstract class "mobile_cash_manager::utils::app_theme.dart::AppTheme" {
+  +Color primaryColor
+  +Color secondaryColor
+  +Color tertiaryColor
+  +Color alternate
+  +Color primaryBackground
+  +Color secondaryBackground
+  +Color primaryText
+  +Color secondaryText
+  +Color primaryBtnText
+  +Color lineColor
+  +Color grayIcon
+  +Color gray200
+  +Color gray600
+  +Color black600
+  +Color tertiary400
+  +Color textColor
+  +String title1Family
+  +TextStyle title1
+  +String title2Family
+  +TextStyle title2
+  +String title3Family
+  +TextStyle title3
+  +String subtitle1Family
+  +TextStyle subtitle1
+  +String subtitle2Family
+  +TextStyle subtitle2
+  +String bodyText1Family
+  +TextStyle bodyText1
+  +String bodyText2Family
+  +TextStyle bodyText2
+  +Typography typography
+  {static} +AppTheme of()
+}
+
+"mobile_cash_manager::utils::app_theme.dart::AppTheme" o-- "dart::ui::Color"
+"mobile_cash_manager::utils::app_theme.dart::AppTheme" o-- "flutter::src::painting::text_style.dart::TextStyle"
+"mobile_cash_manager::utils::app_theme.dart::AppTheme" o-- "mobile_cash_manager::utils::app_theme.dart::Typography"
+
+class "mobile_cash_manager::utils::app_theme.dart::LightModeTheme" {
+  +Color primaryColor
+  +Color secondaryColor
+  +Color tertiaryColor
+  +Color alternate
+  +Color primaryBackground
+  +Color secondaryBackground
+  +Color primaryText
+  +Color secondaryText
+  +Color primaryBtnText
+  +Color lineColor
+  +Color grayIcon
+  +Color gray200
+  +Color gray600
+  +Color black600
+  +Color tertiary400
+  +Color textColor
+}
+
+"mobile_cash_manager::utils::app_theme.dart::LightModeTheme" o-- "dart::ui::Color"
+"mobile_cash_manager::utils::app_theme.dart::AppTheme" <|-- "mobile_cash_manager::utils::app_theme.dart::LightModeTheme"
+
+abstract class "mobile_cash_manager::utils::app_theme.dart::Typography" {
+  +String title1Family
+  +TextStyle title1
+  +String title2Family
+  +TextStyle title2
+  +String title3Family
+  +TextStyle title3
+  +String subtitle1Family
+  +TextStyle subtitle1
+  +String subtitle2Family
+  +TextStyle subtitle2
+  +String bodyText1Family
+  +TextStyle bodyText1
+  +String bodyText2Family
+  +TextStyle bodyText2
+}
+
+"mobile_cash_manager::utils::app_theme.dart::Typography" o-- "flutter::src::painting::text_style.dart::TextStyle"
+
+class "mobile_cash_manager::utils::app_theme.dart::ThemeTypography" {
+  +AppTheme theme
+  +String title1Family
+  +TextStyle title1
+  +String title2Family
+  +TextStyle title2
+  +String title3Family
+  +TextStyle title3
+  +String subtitle1Family
+  +TextStyle subtitle1
+  +String subtitle2Family
+  +TextStyle subtitle2
+  +String bodyText1Family
+  +TextStyle bodyText1
+  +String bodyText2Family
+  +TextStyle bodyText2
+}
+
+"mobile_cash_manager::utils::app_theme.dart::ThemeTypography" o-- "mobile_cash_manager::utils::app_theme.dart::AppTheme"
+"mobile_cash_manager::utils::app_theme.dart::ThemeTypography" o-- "flutter::src::painting::text_style.dart::TextStyle"
+"mobile_cash_manager::utils::app_theme.dart::Typography" <|-- "mobile_cash_manager::utils::app_theme.dart::ThemeTypography"
+
+class "mobile_cash_manager::utils::utils.dart::Utils" {
+  {static} +Logger logger
+  {static} +Uri withBaseUrl()
+}
+
+"mobile_cash_manager::utils::utils.dart::Utils" o-- "logger::src::logger.dart::Logger"
+
+class "mobile_cash_manager::utils::utils.dart::ApiRouteType" {
+  +int index
+  {static} +List<ApiRouteType> values
+  {static} +ApiRouteType users
+  {static} +ApiRouteType articles
+}
+
+"mobile_cash_manager::utils::utils.dart::ApiRouteType" o-- "mobile_cash_manager::utils::utils.dart::ApiRouteType"
+"dart::core::Enum" <|-- "mobile_cash_manager::utils::utils.dart::ApiRouteType"
+
+class "mobile_cash_manager::views::add_card.dart::AddCard" {
+  +State<AddCard> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::add_card.dart::AddCard"
+
+class "mobile_cash_manager::views::add_card.dart::_AddCardState" {
+  +GlobalKey<FormState> formKey
+  +String cardNumber
+  +String expiryDate
+  +String cardHolderName
+  +String cvvCode
+  +String bankName
+  +bool isCvvFocused
+  +OutlineInputBorder? border
+  +void onCreditCardModelChange()
+  +void initState()
+  +Widget build()
+}
+
+"mobile_cash_manager::views::add_card.dart::_AddCardState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"mobile_cash_manager::views::add_card.dart::_AddCardState" o-- "flutter::src::material::input_border.dart::OutlineInputBorder"
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::add_card.dart::_AddCardState"
+
+class "mobile_cash_manager::views::barcode_scan.dart::BarcodeScan" {
+  +State<BarcodeScan> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::barcode_scan.dart::BarcodeScan"
+
+class "mobile_cash_manager::views::barcode_scan.dart::_BarcodeScanState" {
+  +MobileScannerController cameraController
+  +Widget build()
+  +Future<Article> getArticleFromCode()
+}
+
+"mobile_cash_manager::views::barcode_scan.dart::_BarcodeScanState" o-- "mobile_scanner::src::mobile_scanner_controller.dart::MobileScannerController"
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::barcode_scan.dart::_BarcodeScanState"
+
+class "mobile_cash_manager::views::home.dart::Home" {
+  +State<Home> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::home.dart::Home"
+
+class "mobile_cash_manager::views::home.dart::_HomeState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::home.dart::_HomeState"
+
+class "mobile_cash_manager::views::load_data.dart::LoadData" {
+  +State<LoadData> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::load_data.dart::LoadData"
+
+class "mobile_cash_manager::views::load_data.dart::_LoadDataState" {
+  +void initState()
+  +void loadData()
+  +void didChangeDependencies()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::load_data.dart::_LoadDataState"
+
+class "mobile_cash_manager::views::login.dart::Login" {
+  +State<Login> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::login.dart::Login"
+
+class "mobile_cash_manager::views::login.dart::_LoginState" {
+  +TextEditingController emailController
+  +TextEditingController passwordController
+  +Widget build()
+  -Future<void> _login()
+}
+
+"mobile_cash_manager::views::login.dart::_LoginState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::login.dart::_LoginState"
+
+class "mobile_cash_manager::views::menu_nav.dart::MenuNav" {
+  +int firstIndex
+  +State<MenuNav> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::menu_nav.dart::MenuNav"
+
+class "mobile_cash_manager::views::menu_nav.dart::_MenuNavState" {
+  +int selectedIndex
+  +Widget build()
+  +void setBody()
+  -Widget _buildMain()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::menu_nav.dart::_MenuNavState"
+
+class "mobile_cash_manager::views::profile.dart::Profile" {
+  +State<Profile> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::profile.dart::Profile"
+
+class "mobile_cash_manager::views::profile.dart::_ProfileState" {
+  +dynamic updateSolde()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::profile.dart::_ProfileState"
+
+class "mobile_cash_manager::views::register.dart::Register" {
+  +State<Register> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::register.dart::Register"
+
+class "mobile_cash_manager::views::register.dart::_RegisterState" {
+  +TextEditingController firstNameController
+  +TextEditingController lastNameController
+  +TextEditingController emailController
+  +TextEditingController passwordController
+  +TextEditingController confirmPasswordController
+  +List<TextEditingController> controllers
+  +bool loading
+  +Widget build()
+  +Future<void> register()
+  -bool _validate()
+  -void _showSnackBar()
+}
+
+"mobile_cash_manager::views::register.dart::_RegisterState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::register.dart::_RegisterState"
+
+class "mobile_cash_manager::views::settings.dart::Settings" {
+  +State<Settings> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "mobile_cash_manager::views::settings.dart::Settings"
+
+class "mobile_cash_manager::views::settings.dart::_SettingsState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "mobile_cash_manager::views::settings.dart::_SettingsState"
+
+
+@enduml
